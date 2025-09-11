@@ -4,31 +4,70 @@
 
 {% block content %}
 <!-- Hero Section -->
-<section class="bg-gradient-to-r from-emerald-500 to-teal-600 text-white py-20 text-center">
-    <h1 class="text-4xl md:text-5xl font-extrabold mb-4">Welcome to Billing Software</h1>
+<section class="bg-gradient-to-r from-emerald-500 to-teal-600 text-white py-16 text-center">
+    <h1 class="text-4xl md:text-5xl font-extrabold mb-4">Ceepee Computers – Taliparamba</h1>
     <p class="text-lg md:text-xl mb-6">
-        Manage invoices, clients, and reports with ease and simplicity.
+        Smart, reliable <span class="font-semibold">Billing & Stock Management</span> built for local businesses.
     </p>
-    <a href="#features"
+    <button id="exploreBtn"
        class="bg-white text-emerald-600 px-6 py-3 rounded-full font-semibold shadow hover:scale-105 hover:shadow-lg transition transform duration-300 ease-in-out">
-        Get Started
-    </a>
+        Explore Features
+    </button>
 </section>
 
-<!-- Features Section -->
-<section id="features" class="py-16 bg-gray-100">
+<!-- Solutions Section (Always visible, pulled closer) -->
+<section id="solutions" class="py-10 bg-gray-100">
     <div class="container mx-auto px-6 text-center">
-        <h2 class="text-3xl font-bold mb-12">Features</h2>
+        <h2 class="text-3xl font-bold mb-10">Key Features</h2>
         <div class="grid grid-cols-1 md:grid-cols-2 gap-10 max-w-4xl mx-auto">
+            
+            <!-- Stock Management -->
             <div class="bg-white p-8 rounded-3xl shadow-md hover:shadow-2xl transform hover:scale-105 transition duration-300 ease-in-out">
-                <h3 class="text-xl font-semibold mb-4 text-emerald-600">Easy Invoicing</h3>
-                <p class="text-gray-600">Create and manage invoices quickly with built-in templates.</p>
+                <div class="flex items-center justify-center w-16 h-16 mx-auto mb-6 rounded-full bg-emerald-100 text-emerald-600 text-2xl">
+                    📦
+                </div>
+                <h3 class="text-xl font-semibold mb-4 text-emerald-600">Stock Management</h3>
+                <p class="text-gray-600">Track inventory levels, add products, and manage stock seamlessly.</p>
             </div>
+            
+            <!-- Billing -->
             <div class="bg-white p-8 rounded-3xl shadow-md hover:shadow-2xl transform hover:scale-105 transition duration-300 ease-in-out">
-                <h3 class="text-xl font-semibold mb-4 text-emerald-600">Client Management</h3>
-                <p class="text-gray-600">Keep track of your customers and their billing history.</p>
+                <div class="flex items-center justify-center w-16 h-16 mx-auto mb-6 rounded-full bg-teal-100 text-teal-600 text-2xl">
+                    🧾
+                </div>
+                <h3 class="text-xl font-semibold mb-4 text-teal-600">Billing</h3>
+                <p class="text-gray-600">Generate invoices instantly and keep accurate billing records.</p>
             </div>
+
         </div>
     </div>
 </section>
+
+<!-- Popup (Apple-style) -->
+<div id="popupOverlay" class="fixed inset-0 bg-gray-200 bg-opacity-60 hidden flex items-center justify-center z-50">
+    <div id="popupContent" class="bg-white rounded-3xl shadow-2xl p-10 max-w-3xl w-11/12 opacity-0 scale-90 transform transition-all duration-500 ease-out">
+        <h2 class="text-3xl font-bold text-center text-emerald-600 mb-8">Key Features</h2>
+        <div class="grid grid-cols-1 md:grid-cols-2 gap-10">
+            
+            <!-- Stock Management -->
+            <div class="bg-gray-50 p-8 rounded-3xl shadow-md hover:shadow-xl transform hover:scale-105 transition duration-300 ease-in-out">
+                <div class="flex items-center justify-center w-16 h-16 mx-auto mb-6 rounded-full bg-emerald-100 text-emerald-600 text-2xl">
+                    📦
+                </div>
+                <h3 class="text-xl font-semibold mb-4 text-emerald-600">Stock Management</h3>
+                <p class="text-gray-600">Track inventory levels, add products, and manage stock seamlessly.</p>
+            </div>
+            
+            <!-- Billing -->
+            <div class="bg-gray-50 p-8 rounded-3xl shadow-md hover:shadow-xl transform hover:scale-105 transition duration-300 ease-in-out">
+                <div class="flex items-center justify-center w-16 h-16 mx-auto mb-6 rounded-full bg-teal-100 text-teal-600 text-2xl">
+                    🧾
+                </div>
+                <h3 class="text-xl font-semibold mb-4 text-teal-600">Billing</h3>
+                <p class="text-gray-600">Generate invoices instantly and keep accurate billing records.</p>
+            </div>
+
+        </div>
+    </div>
+</div>
 {% endblock %}
