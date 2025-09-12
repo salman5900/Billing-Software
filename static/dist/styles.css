@@ -264,8 +264,14 @@
   .hidden {
     display: none;
   }
+  .table {
+    display: table;
+  }
   .h-16 {
     height: calc(var(--spacing) * 16);
+  }
+  .w-11 {
+    width: calc(var(--spacing) * 11);
   }
   .w-11\/12 {
     width: calc(11/12 * 100%);
@@ -278,6 +284,9 @@
   }
   .max-w-4xl {
     max-width: var(--container-4xl);
+  }
+  .border-collapse {
+    border-collapse: collapse;
   }
   .scale-90 {
     --tw-scale-x: 90%;
@@ -293,6 +302,12 @@
   }
   .transform {
     transform: var(--tw-rotate-x,) var(--tw-rotate-y,) var(--tw-rotate-z,) var(--tw-skew-x,) var(--tw-skew-y,);
+  }
+  .cursor-pointer {
+    cursor: pointer;
+  }
+  .resize {
+    resize: both;
   }
   .grid-cols-1 {
     grid-template-columns: repeat(1, minmax(0, 1fr));
@@ -311,6 +326,10 @@
   }
   .rounded-full {
     border-radius: calc(infinity * 1px);
+  }
+  .border {
+    border-style: var(--tw-border-style);
+    border-width: 1px;
   }
   .bg-emerald-100 {
     background-color: var(--color-emerald-100);
@@ -404,6 +423,9 @@
   .text-white {
     color: var(--color-white);
   }
+  .underline {
+    text-decoration-line: underline;
+  }
   .opacity-0 {
     opacity: 0%;
   }
@@ -422,6 +444,10 @@
     --tw-shadow: 0 4px 6px -1px var(--tw-shadow-color, rgb(0 0 0 / 0.1)), 0 2px 4px -2px var(--tw-shadow-color, rgb(0 0 0 / 0.1));
     box-shadow: var(--tw-inset-shadow), var(--tw-inset-ring-shadow), var(--tw-ring-offset-shadow), var(--tw-ring-shadow), var(--tw-shadow);
   }
+  .outline {
+    outline-style: var(--tw-outline-style);
+    outline-width: 1px;
+  }
   .transition {
     transition-property: color, background-color, border-color, outline-color, text-decoration-color, fill, stroke, --tw-gradient-from, --tw-gradient-via, --tw-gradient-to, opacity, box-shadow, transform, translate, scale, rotate, filter, -webkit-backdrop-filter, backdrop-filter, display, content-visibility, overlay, pointer-events;
     transition-timing-function: var(--tw-ease, var(--default-transition-timing-function));
@@ -431,6 +457,10 @@
     transition-property: all;
     transition-timing-function: var(--tw-ease, var(--default-transition-timing-function));
     transition-duration: var(--tw-duration, var(--default-transition-duration));
+  }
+  .duration-150 {
+    --tw-duration: 150ms;
+    transition-duration: 150ms;
   }
   .duration-300 {
     --tw-duration: 300ms;
@@ -480,6 +510,28 @@
         --tw-shadow: 0 20px 25px -5px var(--tw-shadow-color, rgb(0 0 0 / 0.1)), 0 8px 10px -6px var(--tw-shadow-color, rgb(0 0 0 / 0.1));
         box-shadow: var(--tw-inset-shadow), var(--tw-inset-ring-shadow), var(--tw-ring-offset-shadow), var(--tw-ring-shadow), var(--tw-shadow);
       }
+    }
+  }
+  .active\:translate-y-1 {
+    &:active {
+      --tw-translate-y: calc(var(--spacing) * 1);
+      translate: var(--tw-translate-x) var(--tw-translate-y);
+    }
+  }
+  .active\:scale-90 {
+    &:active {
+      --tw-scale-x: 90%;
+      --tw-scale-y: 90%;
+      --tw-scale-z: 90%;
+      scale: var(--tw-scale-x) var(--tw-scale-y);
+    }
+  }
+  .active\:scale-95 {
+    &:active {
+      --tw-scale-x: 95%;
+      --tw-scale-y: 95%;
+      --tw-scale-z: 95%;
+      scale: var(--tw-scale-x) var(--tw-scale-y);
     }
   }
   .md\:grid-cols-2 {
@@ -534,6 +586,11 @@
 @property --tw-skew-y {
   syntax: "*";
   inherits: false;
+}
+@property --tw-border-style {
+  syntax: "*";
+  inherits: false;
+  initial-value: solid;
 }
 @property --tw-gradient-position {
   syntax: "*";
@@ -646,6 +703,11 @@
   inherits: false;
   initial-value: 0 0 #0000;
 }
+@property --tw-outline-style {
+  syntax: "*";
+  inherits: false;
+  initial-value: solid;
+}
 @property --tw-duration {
   syntax: "*";
   inherits: false;
@@ -653,6 +715,21 @@
 @property --tw-ease {
   syntax: "*";
   inherits: false;
+}
+@property --tw-translate-x {
+  syntax: "*";
+  inherits: false;
+  initial-value: 0;
+}
+@property --tw-translate-y {
+  syntax: "*";
+  inherits: false;
+  initial-value: 0;
+}
+@property --tw-translate-z {
+  syntax: "*";
+  inherits: false;
+  initial-value: 0;
 }
 @layer properties {
   @supports ((-webkit-hyphens: none) and (not (margin-trim: inline))) or ((-moz-orient: inline) and (not (color:rgb(from red r g b)))) {
@@ -665,6 +742,7 @@
       --tw-rotate-z: initial;
       --tw-skew-x: initial;
       --tw-skew-y: initial;
+      --tw-border-style: solid;
       --tw-gradient-position: initial;
       --tw-gradient-from: #0000;
       --tw-gradient-via: #0000;
@@ -689,8 +767,12 @@
       --tw-ring-offset-width: 0px;
       --tw-ring-offset-color: #fff;
       --tw-ring-offset-shadow: 0 0 #0000;
+      --tw-outline-style: solid;
       --tw-duration: initial;
       --tw-ease: initial;
+      --tw-translate-x: 0;
+      --tw-translate-y: 0;
+      --tw-translate-z: 0;
     }
   }
 }

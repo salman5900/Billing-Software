@@ -9,7 +9,7 @@ class Product(models.Model):
     # Store tax rate as a percentage, e.g., 18 for 18%
     tax_rate = models.DecimalField(max_digits=4, decimal_places=2, default=18.00) 
     # This is the taxable value / base price
-    selling_price = models.DecimalField(max_digits=10, decimal_places=2)
+    selling_price = models.IntegerField(default=0,blank=True)
     created_at = models.DateTimeField(auto_now_add=True)
     updated_at = models.DateTimeField(auto_now=True)
     def __str__(self):

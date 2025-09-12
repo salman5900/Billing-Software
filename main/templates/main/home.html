@@ -22,13 +22,15 @@
         <div class="grid grid-cols-1 md:grid-cols-2 gap-10 max-w-4xl mx-auto">
             
             <!-- Stock Management -->
-            <div class="bg-white p-8 rounded-3xl shadow-md hover:shadow-2xl transform hover:scale-105 transition duration-300 ease-in-out">
-                <div class="flex items-center justify-center w-16 h-16 mx-auto mb-6 rounded-full bg-emerald-100 text-emerald-600 text-2xl">v
-                    📦
-                </div>
-                <h3 class="text-xl font-semibold mb-4 text-emerald-600">Stock Management</h3>
-                <p class="text-gray-600">Track inventory levels, add products, and manage stock seamlessly.</p>
+            <div onclick="window.location.href='{% url 'stockMang:stock' %}'" style="cursor:pointer;" class="bg-white p-8 rounded-3xl shadow-md hover:shadow-2xl transform hover:scale-105 active:scale-95 transition duration-300 ease-in-out cursor-pointer"
+        >
+            <div class="flex items-center justify-center w-16 h-16 mx-auto mb-6 rounded-full bg-emerald-100 text-emerald-600 text-2xl">
+                📦
             </div>
+            <h3 class="text-xl font-semibold mb-4 text-emerald-600">Stock Management</h3>
+            <p class="text-gray-600">Track inventory levels, add products, and manage stock seamlessly.</p>
+            </div>
+
             
             <!-- Billing -->
             <div class="bg-white p-8 rounded-3xl shadow-md hover:shadow-2xl transform hover:scale-105 transition duration-300 ease-in-out">
