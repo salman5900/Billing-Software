@@ -3,6 +3,15 @@
 {% block title %}Home{% endblock %}
 
 {% block content %}
+<style>
+    .no-scrollbar::-webkit-scrollbar {
+        display: none !important;
+    }
+    .no-scrollbar {
+        -ms-overflow-style: none !important;  
+        scrollbar-width: none !important;  
+    }
+</style>
 <!-- Hero Section -->
 <section class="bg-gradient-to-r from-emerald-500 to-teal-600 text-white py-16 text-center">
     <h1 class="text-4xl md:text-5xl font-extrabold mb-4">Ceepee Computers – Taliparamba</h1>
@@ -45,10 +54,21 @@
     </div>
 </section>
 
-<!-- Popup (Apple-style) -->
-<div id="popupOverlay" class="fixed inset-0 bg-opacity-60 flex items-center justify-center z-50">
-    <div id="popupContent" class="bg-white rounded-3xl shadow-2xl p-10 max-w-3xl w-11/12 opacity-0 scale-90 transform transition-all duration-500 ease-out">
-        <h2 class="text-3xl font-bold text-center text-emerald-600 mb-8">Key Features</h2>
+<!-- Popup -->
+<div id="popupOverlay" class="fixed inset-0 bg-opacity-60 flex items-center justify-center z-50 hidden">
+    <div id="popupContent" class="no-scrollbar bg-white rounded-3xl shadow-2xl p-10 max-w-5xl w-full max-h-[85vh] overflow-y-auto opacity-0 scale-90 transform transition-all duration-500 ease-out">
+        
+        <h2 class="text-3xl font-bold text-center text-emerald-600 mb-8">About the Application</h2>
+        <p class="text-gray-700 text-lg leading-relaxed mb-10 text-justify">
+            This Billing & Stock Management system was developed for 
+            <span class="font-semibold text-emerald-600">Ceepee Computers – Taliparamba</span>, 
+            a trusted local business. The goal of this application is to streamline 
+            everyday operations by offering a reliable and efficient way to manage 
+            both product inventory and billing records. It has been designed with 
+            usability, accuracy, and scalability in mind, making it suitable for 
+            small and medium businesses.
+        </p>
+
         <div class="grid grid-cols-1 md:grid-cols-2 gap-10">
             
             <!-- Stock Management -->
@@ -57,7 +77,13 @@
                     📦
                 </div>
                 <h3 class="text-xl font-semibold mb-4 text-emerald-600">Stock Management</h3>
-                <p class="text-gray-600">Track inventory levels, add products, and manage stock seamlessly.</p>
+                <p class="text-gray-600 text-justify">
+                    Monitor inventory levels in real-time, add or update products, 
+                    and track quantities with ease. Products can be organized with 
+                    details like HSN codes, dealer information, and tax rates. This 
+                    ensures better transparency in procurement and prevents 
+                    shortages or overstocking.
+                </p>
             </div>
             
             <!-- Billing -->
@@ -66,10 +92,27 @@
                     🧾
                 </div>
                 <h3 class="text-xl font-semibold mb-4 text-teal-600">Billing</h3>
-                <p class="text-gray-600">Generate invoices instantly and keep accurate billing records.</p>
+                <p class="text-gray-600 text-justify">
+                    Generate professional invoices instantly with automated tax 
+                    calculations. All billing records are securely stored, allowing 
+                    easy tracking of sales, revenue, and compliance with tax 
+                    regulations. The process is designed to be fast, accurate, and 
+                    simple for everyday use.
+                </p>
             </div>
 
         </div>
+
+        <div class="mt-10 text-gray-700 text-lg leading-relaxed text-justify">
+            <p>
+                Beyond these features, the application is built to grow with the 
+                business. Future enhancements can include customer management, 
+                detailed reporting, and advanced analytics to provide deeper 
+                insights into sales trends and stock performance.
+            </p>
+        </div>
+
     </div>
 </div>
+
 {% endblock %}
