@@ -3,26 +3,27 @@
 
 {% block content %}
 <style>
-    /* Custom utility to hide the scrollbar. */
     .no-scrollbar::-webkit-scrollbar {
         display: none !important;
     }
     .no-scrollbar {
-        -ms-overflow-style: none !important;  /* IE and Edge */
-        scrollbar-width: none !important;  /* Firefox */
+        -ms-overflow-style: none !important;  
+        scrollbar-width: none !important;  
     }
 </style>
 
 <div class="min-h-screen bg-gray-100 flex items-center justify-center p-4">
     <!-- Outer fixed box -->
-    <div class="bg-gray-200 w-full max-w-5xl h-[90vh] p-8 rounded-xl shadow-lg flex flex-col">
+    <div class="bg-gray-200 w-full max-w-7xl h-[90vh] p-8 rounded-xl shadow-lg flex flex-col">
 
         <div class="relative flex justify-center items-center mb-6 flex-shrink-0">
             <h1 class="text-3xl font-bold text-emerald-600">Stock Management</h1>
 
-            <a href="{% url 'stockMang:addStock' %}" class="absolute top-1/2 right-0 -translate-y-1/2 bg-emerald-600 text-white p-2 rounded-full shadow-md hover:bg-emerald-800 active:bg-emerald-900 transform active:scale-95 transition-all duration-150">
+            <a href="{% url 'stockMang:addStock' %}" 
+               class="absolute top-1/2 right-0 -translate-y-1/2 bg-emerald-600 text-white p-2 rounded-full shadow-md hover:bg-emerald-800 active:bg-emerald-900 transform active:scale-95 transition-all duration-150">
                 <!-- Plus Icon (SVG) -->
-                <svg xmlns="http://www.w3.org/2000/svg" class="h-6 w-6" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="3">
+                <svg xmlns="http://www.w3.org/2000/svg" class="h-6 w-6" fill="none" 
+                     viewBox="0 0 24 24" stroke="currentColor" stroke-width="3">
                   <path stroke-linecap="round" stroke-linejoin="round" d="M12 6v12m6-6H6" />
                 </svg>
             </a>
@@ -34,22 +35,38 @@
                 <thead class="sticky top-0">
                     <tr>
                         <th class="py-3 px-6 bg-emerald-600 text-white font-semibold text-left">Product Name</th>
+                        <th class="py-3 px-6 bg-emerald-600 text-white font-semibold text-left">Dealer</th>
+                        <th class="py-3 px-6 bg-emerald-600 text-white font-semibold text-left">Description</th>
+                        <th class="py-3 px-6 bg-emerald-600 text-white font-semibold text-left">HSN Code</th>
                         <th class="py-3 px-6 bg-emerald-600 text-white font-semibold text-left">Quantity</th>
-                        <th class="py-3 px-6 bg-emerald-600 text-white font-semibold text-left">Price</th>
+                        <th class="py-3 px-6 bg-emerald-600 text-white font-semibold text-left">Tax Rate (%)</th>
+                        <th class="py-3 px-6 bg-emerald-600 text-white font-semibold text-left">Selling Price (₹)</th>
                         <th class="py-3 px-6 bg-emerald-600 text-white font-semibold text-left">Added On</th>
+                        <th class="py-3 px-6 bg-emerald-600 text-white font-semibold text-left">Last Updated</th>
                     </tr>
                 </thead>
                 <tbody class="divide-y divide-gray-200">
                     {% for product in products %}
                     <tr class="hover:bg-gray-50 transition duration-200">
-                        <td class="py-4 px-6">{{ product.name }}</td>
+                        <td class="py-4 px-6 font-medium">{{ product.name }}</td>
+                        <td class="py-4 px-6">
+                            {% if product.dealer %}
+                                {{ product.dealer }}
+                            {% else %}
+                                <span class="text-gray-400 italic">No Dealer</span>
+                            {% endif %}
+                        </td>
+                        <td class="py-4 px-6">{{ product.description|default:"-" }}</td>
+                        <td class="py-4 px-6">{{ product.hsn_code|default:"-" }}</td>
                         <td class="py-4 px-6">{{ product.stock_quantity }}</td>
+                        <td class="py-4 px-6">{{ product.tax_rate }}%</td>
                         <td class="py-4 px-6">₹{{ product.selling_price }}</td>
-                        <td class="py-4 px-6">{{ product.created_at|date:"M d, Y" }}</td>
+                        <td class="py-4 px-6">{{ product.created_at|date:"M d, Y H:i" }}</td>
+                        <td class="py-4 px-6">{{ product.updated_at|date:"M d, Y H:i" }}</td>
                     </tr>
                     {% empty %}
                     <tr>
-                        <td colspan="4" class="text-center py-10 px-6 text-gray-500">
+                        <td colspan="9" class="text-center py-10 px-6 text-gray-500">
                             <p>No products found in your inventory.</p>
                         </td>
                     </tr>
@@ -60,4 +77,3 @@
     </div>
 </div>
 {% endblock %}
-
