@@ -5,4 +5,5 @@ app_name = 'stockMang'
 
 urlpatterns = [
     path('', views.stock, name='stock'),
+    path('add/', views.addStock, name='addStock'),
 ]

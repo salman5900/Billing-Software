@@ -4,3 +4,6 @@ from .models import Product
 def stock(request):
     Products = Product.objects.all().order_by('-created_at')
     return render(request, 'stockMang/stockPage.html', {'products': Products})
+
+def addStock(request):
+    return render(request, 'stockMang/addStock.html')
