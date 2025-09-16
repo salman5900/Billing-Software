@@ -47,7 +47,8 @@
                 </thead>
                 <tbody class="divide-y divide-gray-200">
                     {% for product in products %}
-                    <tr class="hover:bg-gray-50 transition duration-200">
+                    <tr class="hover:bg-gray-50 transition duration-200 cursor-pointer"
+                    onclick="window.location='{% url 'stockMang:editStock' product.id %}'">
                         <td class="py-4 px-6 font-medium">{{ product.name }}</td>
                         <td class="py-4 px-6">
                             {% if product.dealer %}
