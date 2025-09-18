@@ -1,7 +1,146 @@
 {% extends "main/layout.html" %}
 {% block title %}Billing Home{% endblock %}
+{% load widget_tweaks %}
 
 {% block content %}
-<h1>Welcome to the Billing Home Page</h1>
-<p>This is where you can manage your billing activities.</p>
+<style>
+    .no-scrollbar::-webkit-scrollbar {
+        display: none !important;
+    }
+    .no-scrollbar {
+        -ms-overflow-style: none !important;  /* IE and Edge */
+        scrollbar-width: none !important;  /* Firefox */
+    }
+</style>
+
+<div class="min-h-screen bg-gray-50 flex items-center justify-center p-4">
+
+    <div class="w-full max-w-5xl mx-auto px-6 md:px-8 py-10 bg-white rounded-3xl shadow-2xl">
+        <h2 class="text-3xl font-bold text-emerald-600 mb-8 text-center">Create New Bill</h2>
+        
+        <form method="post" novalidate class="space-y-8" id="bill-form">
+            {% csrf_token %}
+
+            <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
+                <div class="flex flex-col">
+                    <label class="mb-2 font-semibold text-gray-700">{{ bill_form.bill_number.label }}</label>
+                    {{ bill_form.bill_number|add_class:"w-full p-3 border rounded-xl focus:ring-2 focus:ring-emerald-500" }}
+                    <p class="text-red-600 text-sm mt-1">{{ bill_form.bill_number.errors }}</p>
+                </div>
+                <div class="flex flex-col">
+                    <label class="mb-2 font-semibold text-gray-700">{{ bill_form.customer_name.label }}</label>
+                    {{ bill_form.customer_name|add_class:"w-full p-3 border rounded-xl focus:ring-2 focus:ring-emerald-500" }}
+                    <p class="text-red-600 text-sm mt-1">{{ bill_form.customer_name.errors }}</p>
+                </div>
+            </div>
+
+            <div class="space-y-4">
+                <h3 class="text-2xl font-semibold text-teal-600">Bill Items</h3>
+                {{ formset.management_form }}
+
+                <div class="overflow-hidden border border-gray-300 rounded-xl">
+                    <table class="min-w-full">
+                        <thead class="bg-gray-100">
+                            <tr class="table w-full table-fixed">
+                                <th class="w-2/5 px-4 py-3 text-left font-semibold text-gray-700">Product</th>
+                                <th class="w-2/5 px-4 py-3 text-left font-semibold text-gray-700">Quantity</th>
+                                <th class="w-1/5 px-4 py-3 text-center font-semibold text-gray-700">Remove</th>
+                            </tr>
+                        </thead>
+                        <tbody id="formset-container" class="block max-h-44 overflow-y-auto no-scrollbar">
+                            {% for form in formset %}
+                                <tr class="form-row table w-full table-fixed border-t border-gray-200 hover:bg-gray-50 transition">
+                                    <td class="w-2/5 px-4 py-2">
+                                        {{ form.product|add_class:"w-full p-2 border rounded-lg focus:ring-2 focus:ring-teal-400" }}
+                                        <p class="text-red-600 text-sm mt-1">{{ form.product.errors }}</p>
+                                    </td>
+                                    <td class="w-2/5 px-4 py-2">
+                                        {{ form.quantity|add_class:"w-full p-2 border rounded-lg focus:ring-2 focus:ring-teal-400" }}
+                                        <p class="text-red-600 text-sm mt-1">{{ form.quantity.errors }}</p>
+                                    </td>
+                                    <td class="w-1/5 px-4 py-2 text-center">
+                                        <button type="button" class="remove-row-btn text-red-600 hover:text-red-800 font-bold text-2xl leading-none">&times;</button>
+                                    </td>
+                                </tr>
+                            {% endfor %}
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+
+            <div class="flex justify-between items-center pt-4">
+                <button id="add-item-btn" type="button" class="bg-blue-600 hover:bg-blue-700 text-white font-semibold px-5 py-2 rounded-full shadow hover:shadow-lg transition-transform duration-300">
+                    + Add Item
+                </button>
+                <button type="submit" class="bg-green-600 hover:bg-green-700 text-white font-semibold px-6 py-3 rounded-full shadow hover:shadow-lg transition-transform duration-300">
+                    Create Bill
+                </button>
+            </div>
+        </form>
+    </div>
+</div>
+
+<template id="item-template">
+    <tr class="form-row table w-full table-fixed border-t border-gray-200 hover:bg-gray-50 transition">
+        <td class="w-2/5 px-4 py-2">
+            {{ formset.empty_form.product|add_class:"w-full p-2 border rounded-lg focus:ring-2 focus:ring-teal-400" }}
+        </td>
+        <td class="w-2/5 px-4 py-2">
+            {{ formset.empty_form.quantity|add_class:"w-full p-2 border rounded-lg focus:ring-2 focus:ring-teal-400" }}
+        </td>
+        <td class="w-1/5 px-4 py-2 text-center">
+            <button type="button" class="remove-row-btn text-red-600 hover:text-red-800 font-bold text-2xl leading-none">&times;</button>
+        </td>
+    </tr>
+</template>
+
+<script>
+document.addEventListener('DOMContentLoaded', function() {
+    const formsetContainer = document.getElementById('formset-container');
+    const addItemBtn = document.getElementById('add-item-btn');
+    const totalFormsInput = document.querySelector('[name$="TOTAL_FORMS"]');
+    const formTemplate = document.getElementById('item-template');
+
+    // Add a new form row
+    addItemBtn.addEventListener('click', function() {
+        let formCount = parseInt(totalFormsInput.value);
+        const newRow = formTemplate.content.cloneNode(true).firstElementChild;
+        newRow.querySelectorAll('input, select, textarea').forEach(input => {
+            const name = input.getAttribute('name').replace('__prefix__', formCount);
+            const id = input.getAttribute('id').replace('__prefix__', formCount);
+            input.setAttribute('name', name);
+            input.setAttribute('id', id);
+        });
+        formsetContainer.appendChild(newRow);
+        totalFormsInput.value = formCount + 1;
+    });
+
+    // Remove a form row
+    formsetContainer.addEventListener('click', function(e) {
+        if (e.target && e.target.classList.contains('remove-row-btn')) {
+            if (formsetContainer.children.length <= 1) {
+                alert("You must have at least one item in the bill.");
+                return;
+            }
+            const rowToRemove = e.target.closest('.form-row');
+            rowToRemove.remove();
+            totalFormsInput.value = parseInt(totalFormsInput.value) - 1;
+            updateFormIndexes();
+        }
+    });
+
+    function updateFormIndexes() {
+        const formRows = formsetContainer.querySelectorAll('.form-row');
+        const prefix = document.querySelector('[name$="PREFIX"]').value;
+        formRows.forEach((row, index) => {
+            row.querySelectorAll('input, select, textarea').forEach(input => {
+                const name = input.getAttribute('name').replace(new RegExp(`${prefix}-\\d+`), `${prefix}-${index}`);
+                const id = input.getAttribute('id').replace(new RegExp(`${prefix}-\\d+`), `${prefix}-${index}`);
+                input.setAttribute('name', name);
+                input.setAttribute('id', id);
+            });
+        });
+    }
+});
+</script>
 {% endblock %}

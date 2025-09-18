@@ -1,5 +1,44 @@
-from django.shortcuts import render
+from django.shortcuts import render, redirect
+from django.db import transaction
+from django.forms import modelform_factory
+from django.contrib import messages
+from .models import Bill, BillItem
+from .forms import BillForm, BillItemFormSet
+from django import forms
 
-# Create your views here.
 def BillingPage(request):
-    return render(request, 'Billing/billing_home.html')
+    if request.method == 'POST':
+        bill_form = BillForm(request.POST)
+        formset = BillItemFormSet(request.POST)
+        if bill_form.is_valid() and formset.is_valid():
+            try:
+                with transaction.atomic():
+                    bill = bill_form.save()
+                    items = formset.save(commit=False)
+                    for item in items:
+                        item.bill = bill
+                        # Pulls product price and tax at time of billing
+                        item.price = item.product.selling_price
+                        item.tax_rate = item.product.tax_rate
+                        # Checks again to prevent concurrent stock issue
+                        if item.quantity > item.product.stock_quantity:
+                            raise forms.ValidationError(
+                                f"Not enough stock for {item.product.name}"
+                            )
+                        item.product.stock_quantity -= item.quantity
+                        item.product.save()
+                        item.save()
+                    formset.save_m2m()
+                messages.success(request, 'Bill created successfully!')
+                return redirect('bill_detail', pk=bill.pk)
+            except Exception as e:
+                messages.error(request, f'Error: {e}')
+        else:
+            messages.error(request, 'Please correct errors below.')
+    else:
+        bill_form = BillForm()
+        formset = BillItemFormSet()
+    return render(request, 'Billing/billing_home.html', {
+        'bill_form': bill_form,
+        'formset': formset
+    })
