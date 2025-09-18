@@ -27,10 +27,12 @@ def BillingPage(request):
                             )
                         item.product.save()
                         item.save()
-                    formset.save_m2m()
+                    # formset.save_m2m()
                 messages.success(request, 'Bill created successfully!')
-                return redirect('dashboard')
+                return redirect('Billing:dashboard')
+
             except Exception as e:
+                print("M2M save error:", e)
                 messages.error(request, f'Error: {e}')
         else:
             messages.error(request, 'Please correct errors below.')
