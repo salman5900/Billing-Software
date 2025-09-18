@@ -41,6 +41,7 @@ INSTALLED_APPS = [
     'main',
     'stockMang',
     'widget_tweaks',
+    'Billing',
 ]
 
 MIDDLEWARE = [
