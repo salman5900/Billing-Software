@@ -5,6 +5,7 @@ from django.contrib import messages
 from .models import Bill, BillItem
 from .forms import BillForm, BillItemFormSet
 from django import forms
+from django.db.models import Sum
 
 def BillingPage(request):
     if request.method == 'POST':
@@ -46,4 +47,10 @@ def BillingPage(request):
 
 
 def dashboard(request):
-    return render(request, 'Billing/dashboard.html')
+    bills = Bill.objects.all().order_by('-date')
+    total_revenue = sum(bill.total_amount for bill in bills)
+    context = {
+        'bills': bills,
+        'total_revenue': total_revenue,
+    }
+    return render(request, 'Billing/dashboard.html', context)
