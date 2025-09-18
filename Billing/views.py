@@ -25,12 +25,11 @@ def BillingPage(request):
                             raise forms.ValidationError(
                                 f"Not enough stock for {item.product.name}"
                             )
-                        item.product.stock_quantity -= item.quantity
                         item.product.save()
                         item.save()
                     formset.save_m2m()
                 messages.success(request, 'Bill created successfully!')
-                return redirect('bill_detail', pk=bill.pk)
+                return redirect('dashboard')
             except Exception as e:
                 messages.error(request, f'Error: {e}')
         else:
@@ -42,3 +41,7 @@ def BillingPage(request):
         'bill_form': bill_form,
         'formset': formset
     })
+
+
+def dashboard(request):
+    return render(request, 'Billing/dashboard.html')

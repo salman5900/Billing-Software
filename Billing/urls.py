@@ -5,4 +5,5 @@ app_name = 'Billing'
 
 urlpatterns = [
     path('', views.BillingPage, name='Billing-home'),
+    path('dashboard/', views.dashboard, name='dashboard'),
 ]
