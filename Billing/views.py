@@ -1,4 +1,4 @@
-from django.shortcuts import render, redirect
+from django.shortcuts import render, redirect, get_object_or_404
 from django.db import transaction
 from django.forms import modelform_factory
 from django.contrib import messages
@@ -43,6 +43,55 @@ def BillingPage(request):
     return render(request, 'Billing/billing_home.html', {
         'bill_form': bill_form,
         'formset': formset
+    })
+
+def BillingPageEdit(request, bill_id):
+    bill = get_object_or_404(Bill, id=bill_id)
+
+    if request.method == 'POST':
+        bill_form = BillForm(request.POST, instance=bill)
+        formset = BillItemFormSet(request.POST, instance=bill)
+
+        if bill_form.is_valid() and formset.is_valid():
+            try:
+                with transaction.atomic():
+                    bill = bill_form.save()
+                    items = formset.save(commit=False)
+
+                    # Update items
+                    for item in items:
+                        item.bill = bill
+                        item.price = item.product.selling_price
+                        item.tax_rate = item.product.tax_rate
+                        if item.quantity > item.product.stock_quantity:
+                            raise forms.ValidationError(
+                                f"Not enough stock for {item.product.name}"
+                            )
+                        item.product.save()
+                        item.save()
+
+                    # Delete items marked for removal
+                    for obj in formset.deleted_objects:
+                        obj.delete()
+
+                messages.success(request, 'Bill updated successfully!')
+                return redirect('Billing:dashboard')
+
+            except Exception as e:
+                print("Edit save error:", e)
+                messages.error(request, f'Error: {e}')
+        else:
+            messages.error(request, 'Please correct errors below.')
+
+    else:
+        bill_form = BillForm(instance=bill)
+        formset = BillItemFormSet(instance=bill)
+
+    return render(request, 'Billing/billing_edit.html', {
+        'bill_form': bill_form,
+        'formset': formset,
+        'edit_mode': True,
+        'bill': bill,
     })
 
 

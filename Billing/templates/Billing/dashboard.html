@@ -3,7 +3,7 @@
 {% block title %}Dashboard{% endblock %}
 
 {% block content %}
-<section class="bg-gradient-to-r from-emerald-500 to-teal-600 text-white py-12 text-center">
+<section class="bg-gradient-to-r from-emerald-500 to-teal-600 text-white py-12 text-center shadow-lg">
     <h1 class="text-4xl md:text-5xl font-extrabold mb-2">Billing Dashboard</h1>
     <p class="text-lg md:text-xl mb-6">
         Overview of all <span class="font-semibold">Invoices</span> – latest first
@@ -13,17 +13,17 @@
 <section class="container mx-auto px-6 py-12">
     <!-- Summary Cards -->
     <div class="grid grid-cols-1 md:grid-cols-3 gap-6 mb-12">
-        <div class="bg-white rounded-3xl shadow-md p-6 text-center hover:shadow-xl transition duration-300">
+        <div class="bg-white rounded-3xl border border-gray-300 shadow-md p-6 text-center hover:shadow-xl transition duration-300">
             <h2 class="text-xl font-semibold text-gray-700 mb-2">Total Bills</h2>
             <p class="text-3xl font-bold text-emerald-600">{{ bills.count }}</p>
         </div>
-        <div class="bg-white rounded-3xl shadow-md p-6 text-center hover:shadow-xl transition duration-300">
+        <div class="bg-white rounded-3xl border border-gray-300 shadow-md p-6 text-center hover:shadow-xl transition duration-300">
             <h2 class="text-xl font-semibold text-gray-700 mb-2">Total Revenue</h2>
             <p class="text-3xl font-bold text-teal-600">
-                ₹₹{{ total_revenue|floatformat:2 }}
+                ₹{{ total_revenue|floatformat:2 }}
             </p>
         </div>
-        <div class="bg-white rounded-3xl shadow-md p-6 text-center hover:shadow-xl transition duration-300">
+        <div class="bg-white rounded-3xl border border-gray-300 shadow-md p-6 text-center hover:shadow-xl transition duration-300">
             <h2 class="text-xl font-semibold text-gray-700 mb-2">Latest Invoice</h2>
             {% if bills %}
                 <p class="text-2xl font-bold text-emerald-500">{{ bills.first.bill_number }}</p>
@@ -35,27 +35,36 @@
     </div>
 
     <!-- Bills Table -->
-    <div class="overflow-x-auto bg-white rounded-3xl shadow-md">
-        <table class="min-w-full table-auto text-left">
-            <thead class="bg-emerald-500 text-white">
+    <div class="overflow-x-auto bg-white rounded-2xl border border-gray-300 shadow-lg">
+        <table class="min-w-full border-collapse">
+            <thead class="bg-gradient-to-r from-emerald-500 to-teal-600 text-white">
                 <tr>
-                    <th class="px-6 py-3">Invoice Number</th>
-                    <th class="px-6 py-3">Customer</th>
-                    <th class="px-6 py-3">Total Amount</th>
-                    <th class="px-6 py-3">Date</th>
-                    <th class="px-6 py-3">Actions</th>
+                    <th class="px-6 py-3 text-left text-sm font-semibold uppercase border-b border-emerald-600">Invoice Number</th>
+                    <th class="px-6 py-3 text-left text-sm font-semibold uppercase border-b border-emerald-600">Customer</th>
+                    <th class="px-6 py-3 text-left text-sm font-semibold uppercase border-b border-emerald-600">Total Amount</th>
+                    <th class="px-6 py-3 text-left text-sm font-semibold uppercase border-b border-emerald-600">Date</th>
+                    <th class="px-6 py-3 text-center text-sm font-semibold uppercase border-b border-emerald-600">Actions</th>
                 </tr>
             </thead>
             <tbody>
                 {% for bill in bills %}
-                <tr class="border-b hover:bg-gray-50 transition duration-200">
+                <tr class="hover:bg-gray-50 transition duration-200 border-b border-gray-200">
                     <td class="px-6 py-4 font-medium text-gray-800">{{ bill.bill_number }}</td>
                     <td class="px-6 py-4 text-gray-600">{{ bill.customer_name }}</td>
                     <td class="px-6 py-4 font-semibold text-teal-600">₹{{ bill.total_amount|floatformat:2 }}</td>
                     <td class="px-6 py-4 text-gray-500">{{ bill.date|date:"d M Y" }}</td>
-                    <td class="px-6 py-4">
-                        <a href="{% url 'Billing:Billing-home' %}" 
-                           class="text-emerald-600 hover:text-emerald-800 font-semibold">View</a>
+                    <td class="px-6 py-4 flex items-center justify-center gap-4">
+                        <!-- View/Edit button -->
+                        <a href="{% url 'Billing:edit-bill' bill.id %}" 
+                           class="text-emerald-600 hover:text-emerald-800 font-semibold">Edit</a>
+
+                        <!-- Delete button (future view) -->
+                        <form action="{% url 'Billing:Billing-home' %}" method="post" class="inline">
+                            {% csrf_token %}
+                            <button type="submit" 
+                                class="text-red-500 hover:text-red-700 font-bold text-lg"
+                                title="Delete Invoice">✖</button>
+                        </form>
                     </td>
                 </tr>
                 {% empty %}
