@@ -18,10 +18,18 @@
     <p class="text-lg md:text-xl mb-6">
         Smart, reliable <span class="font-semibold">Billing & Stock Management</span> built for local businesses.
     </p>
-    <button id="exploreBtn"
-       class="bg-white text-emerald-600 px-6 py-3 rounded-full font-semibold shadow hover:scale-105 hover:shadow-lg transition transform duration-300 ease-in-out">
-        Explore Features
-    </button>
+    <div class="flex justify-center gap-4">
+        <!-- Explore Button (Popup Trigger) -->
+        <button id="exploreBtn"
+            class="bg-white text-emerald-600 px-6 py-3 rounded-full font-semibold shadow hover:scale-105 hover:shadow-lg transition transform duration-300 ease-in-out">
+            Explore Features
+        </button>
+        <!-- Dashboard Button -->
+        <a href="{% url 'Billing:dashboard' %}" 
+           class="bg-emerald-800 hover:bg-emerald-900 text-white px-6 py-3 rounded-full font-semibold shadow hover:scale-105 hover:shadow-lg transition transform duration-300 ease-in-out">
+           Dashboard
+        </a>
+    </div>
 </section>
 
 <!-- Solutions Section -->
@@ -31,16 +39,14 @@
         <div class="grid grid-cols-1 md:grid-cols-2 gap-10 max-w-4xl mx-auto">
             
             <!-- Stock Management -->
-            <div onclick="window.location.href='{% url 'stockMang:stock' %}'" style="cursor:pointer;" class="bg-white p-8 rounded-3xl shadow-md hover:shadow-2xl transform hover:scale-105 active:scale-95 transition duration-300 ease-in-out cursor-pointer"
-        >
-            <div class="flex items-center justify-center w-16 h-16 mx-auto mb-6 rounded-full bg-emerald-100 text-emerald-600 text-2xl">
-                📦
-            </div>
-            <h3 class="text-xl font-semibold mb-4 text-emerald-600">Stock Management</h3>
-            <p class="text-gray-600">Track inventory levels, add products, and manage stock seamlessly.</p>
+            <div onclick="window.location.href='{% url 'stockMang:stock' %}'" style="cursor:pointer;" class="bg-white p-8 rounded-3xl shadow-md hover:shadow-2xl transform hover:scale-105 active:scale-95 transition duration-300 ease-in-out cursor-pointer">
+                <div class="flex items-center justify-center w-16 h-16 mx-auto mb-6 rounded-full bg-emerald-100 text-emerald-600 text-2xl">
+                    📦
+                </div>
+                <h3 class="text-xl font-semibold mb-4 text-emerald-600">Stock Management</h3>
+                <p class="text-gray-600">Track inventory levels, add products, and manage stock seamlessly.</p>
             </div>
 
-            
             <!-- Billing -->
             <div onclick="window.location.href='{% url 'Billing:Billing-home' %}'" style="cursor:pointer;" class="bg-white p-8 rounded-3xl shadow-md hover:shadow-2xl transform hover:scale-105 transition duration-300 ease-in-out">
                 <div class="flex items-center justify-center w-16 h-16 mx-auto mb-6 rounded-full bg-teal-100 text-teal-600 text-2xl">
@@ -56,7 +62,7 @@
 
 <!-- Popup -->
 <div id="popupOverlay" class="fixed inset-0 bg-opacity-60 flex items-center justify-center z-50 hidden">
-    <div id="popupContent" class="no-scrollbar bg-white rounded-3xl shadow-2xl p-10 max-w-5xl w-full max-h-[85vh] overflow-y-auto opacity-0 scale-90 transform transition-all duration-500 ease-out">
+    <div id="popupContent" class="no-scrollbar bg-white rounded-3xl shadow-2xl p-10 max-w-6xl w-full max-h-[85vh] overflow-y-auto opacity-0 scale-90 transform transition-all duration-500 ease-out">
         
         <h2 class="text-3xl font-bold text-center text-emerald-600 mb-8">About the Application</h2>
         <p class="text-gray-700 text-lg leading-relaxed mb-10 text-justify">
@@ -69,7 +75,7 @@
             small and medium businesses.
         </p>
 
-        <div class="grid grid-cols-1 md:grid-cols-2 gap-10">
+        <div class="grid grid-cols-1 md:grid-cols-3 gap-10">
             
             <!-- Stock Management -->
             <div class="bg-gray-50 p-8 rounded-3xl shadow-md hover:shadow-xl transform hover:scale-105 transition duration-300 ease-in-out">
@@ -101,6 +107,18 @@
                 </p>
             </div>
 
+            <!-- Dashboard -->
+            <div class="bg-gray-50 p-8 rounded-3xl shadow-md hover:shadow-xl transform hover:scale-105 transition duration-300 ease-in-out">
+                <div class="flex items-center justify-center w-16 h-16 mx-auto mb-6 rounded-full bg-green-100 text-green-600 text-2xl">
+                    📊
+                </div>
+                <h3 class="text-xl font-semibold mb-4 text-green-600">Dashboard</h3>
+                <p class="text-gray-600 text-justify">
+                    The dashboard provides a complete overview of all bills, sorted with the latest on top. 
+                    It gives business owners a clear view of daily sales, revenue, and recent transactions in one place.
+                </p>
+            </div>
+
         </div>
 
         <div class="mt-10 text-gray-700 text-lg leading-relaxed text-justify">
@@ -109,6 +127,13 @@
                 business. Future enhancements can include customer management, 
                 detailed reporting, and advanced analytics to provide deeper 
                 insights into sales trends and stock performance.
+            </p>
+            <p class="mt-6">
+                This system was proudly developed by 
+                <span class="font-semibold text-emerald-600">Salman Ahamed</span>, 
+                a passionate Computer Science student and full-stack developer. 
+                The focus was on creating a tool that balances efficiency, clarity, and a 
+                user-friendly experience for real-world businesses.
             </p>
         </div>
 
