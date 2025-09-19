@@ -58,8 +58,8 @@
                         <a href="{% url 'Billing:edit-bill' bill.id %}" 
                            class="text-emerald-600 hover:text-emerald-800 font-semibold">Edit</a>
 
-                        <!-- Delete button (future view) -->
-                        <form action="{% url 'Billing:Billing-home' %}" method="post" class="inline">
+                        <!-- Delete button -->
+                        <form action="{% url 'Billing:delete-bill' bill.id %}" method="post" class="inline">
                             {% csrf_token %}
                             <button type="submit" 
                                 class="text-red-500 hover:text-red-700 font-bold text-lg"

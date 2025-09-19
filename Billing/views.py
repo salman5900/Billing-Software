@@ -28,7 +28,7 @@ def BillingPage(request):
                             )
                         item.product.save()
                         item.save()
-                    # formset.save_m2m()
+                        formset.save_m2m()
                 messages.success(request, 'Bill created successfully!')
                 return redirect('Billing:dashboard')
 
@@ -94,6 +94,11 @@ def BillingPageEdit(request, bill_id):
         'bill': bill,
     })
 
+def BillingPageDelete(request, bill_id):
+    bill = get_object_or_404(Bill, id=bill_id)
+    bill.delete()
+    messages.success(request, 'Bill deleted successfully!')
+    return redirect('Billing:dashboard')
 
 def dashboard(request):
     bills = Bill.objects.all().order_by('-date')

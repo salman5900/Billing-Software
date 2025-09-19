@@ -8,6 +8,7 @@ class BillForm(forms.ModelForm):
     class Meta:
         model = Bill
         fields = ['bill_number', 'customer_name']
+        exclude = ['bill_number']  
 
     def __init__(self, *args, **kwargs):
         super().__init__(*args, **kwargs)
