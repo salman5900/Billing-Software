@@ -2,16 +2,78 @@
 {% load static %}
 <html lang="en">
 <head>
-     <link rel="stylesheet" href="{% static 'dist/styles.css' %}">
+    <link rel="stylesheet" href="{% static 'dist/styles.css' %}">
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.2/css/all.min.css" rel="stylesheet">
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>
-        {% block title %}Billing Software{% endblock %}
-    </title>
+    <title>{% block title %}Billing Software{% endblock %}</title>
+    <style>
+        /* Sequential slide-in animation from left */
+        @keyframes slideInLeft {
+            0% { transform: translateX(-40px); opacity: 0; }
+            100% { transform: translateX(0); opacity: 1; }
+        }
+        .navbar-btn {
+            animation: slideInLeft 0.5s ease-out forwards;
+            opacity: 0;
+        }
+        .tooltip {
+            position: absolute;
+            bottom: -35px;
+            left: 50%;
+            transform: translateX(-50%);
+            background-color: #111;
+            color: #fff;
+            font-size: 0.75rem;
+            padding: 4px 8px;
+            border-radius: 6px;
+            white-space: nowrap;
+            opacity: 0;
+            pointer-events: none;
+            transition: opacity 0.3s ease, transform 0.3s ease;
+            z-index: 10;
+        }
+        .group:hover .tooltip {
+            opacity: 1;
+            transform: translateX(-50%) translateY(5px);
+        }
+    </style>
 </head>
-<body>
-    {% block content %}
-    {% endblock %}
-     <script src="{% static 'js/main.js' %}"></script>
+<body class="bg-gray-50">
+
+{% block content %}{% endblock %}
+
+<!-- Floating Horizontal Navbar (All pages except home) -->
+{% if request.path != '/' %}
+<div class="fixed top-4 left-4 flex space-x-4 z-50">
+
+    <!-- Home Button -->
+    <a href="/" class="group relative w-14 h-14 bg-gray-800 text-white rounded-full flex items-center justify-center shadow-lg hover:bg-gray-900 transition transform hover:-translate-y-1 navbar-btn" style="animation-delay: 0s;">
+        <i class="fas fa-home fa-lg"></i>
+        <span class="tooltip">Home</span>
+    </a>
+
+    <!-- Dashboard Button -->
+    <a href="{% url 'Billing:dashboard' %}" class="group relative w-14 h-14 bg-emerald-600 text-white rounded-full flex items-center justify-center shadow-lg hover:bg-emerald-700 transition transform hover:-translate-y-1 navbar-btn" style="animation-delay: 0.1s;">
+        <i class="fas fa-chart-line fa-lg"></i>
+        <span class="tooltip">Dashboard</span>
+    </a>
+
+    <!-- Billing Button -->
+    <a href="{% url 'Billing:Billing-home' %}" class="group relative w-14 h-14 bg-blue-600 text-white rounded-full flex items-center justify-center shadow-lg hover:bg-blue-700 transition transform hover:-translate-y-1 navbar-btn" style="animation-delay: 0.2s;">
+        <i class="fas fa-file-invoice-dollar fa-lg"></i>
+        <span class="tooltip">Billing</span>
+    </a>
+
+    <!-- Stock Management Button -->
+    <a href="{% url 'stockMang:stock' %}" class="group relative w-14 h-14 bg-yellow-500 text-white rounded-full flex items-center justify-center shadow-lg hover:bg-yellow-600 transition transform hover:-translate-y-1 navbar-btn" style="animation-delay: 0.3s;">
+        <i class="fas fa-warehouse fa-lg"></i>
+        <span class="tooltip">Stock</span>
+    </a>
+
+</div>
+{% endif %}
+
+<script src="{% static 'js/main.js' %}"></script>
 </body>
 </html>
