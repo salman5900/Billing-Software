@@ -27,7 +27,7 @@
             <h2 class="text-xl font-semibold text-gray-700 mb-2">Latest Invoice</h2>
             {% if bills %}
                 <p class="text-2xl font-bold text-emerald-500">{{ bills.first.bill_number }}</p>
-                <p class="text-gray-500 text-sm">{{ bills.first.date|date:"d M Y" }}</p>
+                <p class="text-gray-500 text-sm">{{ bill.date|date:"d M Y H:i:s" }}</p>
             {% else %}
                 <p class="text-gray-500">No bills yet</p>
             {% endif %}

@@ -7,7 +7,22 @@ from .forms import BillForm, BillItemFormSet
 from django import forms
 from django.db.models import Sum
 
+from .models import Bill, BillItem
+from django.db.models import Max
+from django.db import transaction
+
 def BillingPage(request):
+    # Compute next bill number for display
+    last_bill = Bill.objects.order_by('-id').first()
+    if last_bill and last_bill.bill_number:
+        try:
+            last_number = int(last_bill.bill_number.split('-')[-1])
+        except ValueError:
+            last_number = 0
+        next_bill_number = f"CEEPEE-INVO-{last_number + 1:04d}"
+    else:
+        next_bill_number = "CEEPEE-INVO-0001"
+
     if request.method == 'POST':
         bill_form = BillForm(request.POST)
         formset = BillItemFormSet(request.POST)
@@ -18,10 +33,8 @@ def BillingPage(request):
                     items = formset.save(commit=False)
                     for item in items:
                         item.bill = bill
-                        # Pulls product price and tax at time of billing
                         item.price = item.product.selling_price
                         item.tax_rate = item.product.tax_rate
-                        # Checks again to prevent concurrent stock issue
                         if item.quantity > item.product.stock_quantity:
                             raise forms.ValidationError(
                                 f"Not enough stock for {item.product.name}"
@@ -31,19 +44,20 @@ def BillingPage(request):
                         formset.save_m2m()
                 messages.success(request, 'Bill created successfully!')
                 return redirect('Billing:dashboard')
-
             except Exception as e:
-                print("M2M save error:", e)
                 messages.error(request, f'Error: {e}')
         else:
             messages.error(request, 'Please correct errors below.')
     else:
         bill_form = BillForm()
         formset = BillItemFormSet()
+
     return render(request, 'Billing/billing_home.html', {
         'bill_form': bill_form,
-        'formset': formset
+        'formset': formset,
+        'next_bill_number': next_bill_number  # pass it to template
     })
+
 
 def BillingPageEdit(request, bill_id):
     bill = get_object_or_404(Bill, id=bill_id)

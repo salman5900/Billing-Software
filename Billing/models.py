@@ -5,7 +5,7 @@ from stockMang.models import Product
 
 class Bill(models.Model):
     bill_number = models.CharField(max_length=20, unique=True, editable=False, blank=True)
-    date = models.DateField(auto_now_add=True)
+    date = models.DateTimeField(auto_now_add=True)
     customer_name = models.CharField(max_length=100)
 
     def save(self, *args, **kwargs):
