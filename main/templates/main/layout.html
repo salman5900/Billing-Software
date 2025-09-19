@@ -8,21 +8,39 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>{% block title %}Billing Software{% endblock %}</title>
     <style>
-        /* Sequential slide-in animation from left */
-        @keyframes slideInLeft {
-            0% { transform: translateX(-40px); opacity: 0; }
-            100% { transform: translateX(0); opacity: 1; }
+        /* Navbar container */
+        .floating-navbar {
+            position: fixed;
+            top: 1rem;
+            left: 1rem;
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+            z-index: 50;
         }
-        .navbar-btn {
-            animation: slideInLeft 0.5s ease-out forwards;
-            opacity: 0;
+
+        /* Buttons base style */
+        .nav-btn {
+            width: 56px;
+            height: 56px;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: #fff;
+            box-shadow: 0 4px 10px rgba(0,0,0,0.15);
+            cursor: pointer;
+            position: relative;
+            transition: transform 0.3s ease, background-color 0.3s ease, filter 0.3s ease;
         }
-        .tooltip {
+
+        /* Tooltip */
+        .nav-btn .tooltip {
             position: absolute;
-            bottom: -35px;
+            bottom: -30px;
             left: 50%;
             transform: translateX(-50%);
-            background-color: #111;
+            background: #111;
             color: #fff;
             font-size: 0.75rem;
             padding: 4px 8px;
@@ -31,11 +49,35 @@
             opacity: 0;
             pointer-events: none;
             transition: opacity 0.3s ease, transform 0.3s ease;
-            z-index: 10;
         }
-        .group:hover .tooltip {
+
+        .nav-btn:hover .tooltip {
             opacity: 1;
             transform: translateX(-50%) translateY(5px);
+        }
+
+        /* Hidden offset for fan-out (all buttons) */
+        .fan-out .nav-btn {
+            transform: translateX(-40px);
+            opacity: 0.6;
+        }
+
+        /* Fan-out reveal on hover */
+        .floating-navbar:hover .nav-btn {
+            transform: translateX(0);
+            opacity: 1;
+        }
+
+        /* Sequential animation on hover */
+        .floating-navbar:hover .nav-btn:nth-child(1) { transition-delay: 0s; } /* Home button */
+        .floating-navbar:hover .nav-btn:nth-child(2) { transition-delay: 0.05s; }
+        .floating-navbar:hover .nav-btn:nth-child(3) { transition-delay: 0.1s; }
+        .floating-navbar:hover .nav-btn:nth-child(4) { transition-delay: 0.15s; }
+
+        /* Hover effect (brightness + scale) */
+        .nav-btn:hover {
+            filter: brightness(1.1);
+            transform: scale(1.1);
         }
     </style>
 </head>
@@ -43,34 +85,32 @@
 
 {% block content %}{% endblock %}
 
-<!-- Floating Horizontal Navbar (All pages except home) -->
+<!-- Floating Navbar (All pages except home) -->
 {% if request.path != '/' %}
-<div class="fixed top-4 left-4 flex space-x-4 z-50">
-
+<div class="floating-navbar fan-out">
     <!-- Home Button -->
-    <a href="/" class="group relative w-14 h-14 bg-gray-800 text-white rounded-full flex items-center justify-center shadow-lg hover:bg-gray-900 transition transform hover:-translate-y-1 navbar-btn" style="animation-delay: 0s;">
+    <a href="/" class="nav-btn bg-gray-800 group">
         <i class="fas fa-home fa-lg"></i>
         <span class="tooltip">Home</span>
     </a>
 
     <!-- Dashboard Button -->
-    <a href="{% url 'Billing:dashboard' %}" class="group relative w-14 h-14 bg-emerald-600 text-white rounded-full flex items-center justify-center shadow-lg hover:bg-emerald-700 transition transform hover:-translate-y-1 navbar-btn" style="animation-delay: 0.1s;">
+    <a href="{% url 'Billing:dashboard' %}" class="nav-btn bg-emerald-600 group">
         <i class="fas fa-chart-line fa-lg"></i>
         <span class="tooltip">Dashboard</span>
     </a>
 
     <!-- Billing Button -->
-    <a href="{% url 'Billing:Billing-home' %}" class="group relative w-14 h-14 bg-blue-600 text-white rounded-full flex items-center justify-center shadow-lg hover:bg-blue-700 transition transform hover:-translate-y-1 navbar-btn" style="animation-delay: 0.2s;">
+    <a href="{% url 'Billing:Billing-home' %}" class="nav-btn bg-blue-600 group">
         <i class="fas fa-file-invoice-dollar fa-lg"></i>
         <span class="tooltip">Billing</span>
     </a>
 
     <!-- Stock Management Button -->
-    <a href="{% url 'stockMang:stock' %}" class="group relative w-14 h-14 bg-yellow-500 text-white rounded-full flex items-center justify-center shadow-lg hover:bg-yellow-600 transition transform hover:-translate-y-1 navbar-btn" style="animation-delay: 0.3s;">
+    <a href="{% url 'stockMang:stock' %}" class="nav-btn bg-yellow-500 group">
         <i class="fas fa-warehouse fa-lg"></i>
         <span class="tooltip">Stock</span>
     </a>
-
 </div>
 {% endif %}
 
