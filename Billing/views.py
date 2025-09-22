@@ -1,15 +1,16 @@
 from django.shortcuts import render, redirect, get_object_or_404
 from django.db import transaction
-from django.forms import modelform_factory
 from django.contrib import messages
-from .models import Bill, BillItem
+from .models import Bill
 from .forms import BillForm, BillItemFormSet
 from django import forms
-from django.db.models import Sum
-
-from .models import Bill, BillItem
-from django.db.models import Max
+from .models import Bill
 from django.db import transaction
+# PDF generation imports
+from django.http import HttpResponse
+from django.template.loader import render_to_string
+from weasyprint import HTML
+from django.templatetags.static import static
 
 def BillingPage(request):
     # Compute next bill number for display
@@ -41,9 +42,18 @@ def BillingPage(request):
                             )
                         item.product.save()
                         item.save()
-                        formset.save_m2m()
-                messages.success(request, 'Bill created successfully!')
-                return redirect('Billing:dashboard')
+                    formset.save_m2m()
+
+                # After saving, generate PDF
+                logo_url = request.build_absolute_uri(static('images/logo.jpg'))
+                html_string = render_to_string('Billing/bill_pdf.html', {'bill': bill, 'logo_url': logo_url})
+                html = HTML(string=html_string)
+                pdf_file = html.write_pdf()
+
+                response = HttpResponse(pdf_file, content_type='application/pdf')
+                response['Content-Disposition'] = f'filename=Invoice_{bill.bill_number}.pdf'
+                return response
+
             except Exception as e:
                 messages.error(request, f'Error: {e}')
         else:
@@ -55,7 +65,7 @@ def BillingPage(request):
     return render(request, 'Billing/billing_home.html', {
         'bill_form': bill_form,
         'formset': formset,
-        'next_bill_number': next_bill_number  # pass it to template
+        'next_bill_number': next_bill_number
     })
 
 

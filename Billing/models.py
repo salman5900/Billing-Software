@@ -18,15 +18,25 @@ class Bill(models.Model):
                 else:
                     new_number = 1
                 self.bill_number = f"CEEPEE-INVO-{new_number:04d}"
-
         super().save(*args, **kwargs)
 
     def __str__(self):
         return f"{self.bill_number} - {self.customer_name}"
 
     @property
+    def subtotal(self):
+        """Sum of all item base prices (without tax)."""
+        return sum(item.price * item.quantity for item in self.items.all())
+
+    @property
+    def tax_amount(self):
+        """Total tax from all items."""
+        return sum((item.price * item.quantity) * (item.tax_rate / 100) for item in self.items.all())
+
+    @property
     def total_amount(self):
-        return sum(item.total_amount for item in self.items.all())
+        """Subtotal + tax (final invoice amount)."""
+        return self.subtotal + self.tax_amount
 
 
 class BillItem(models.Model):
