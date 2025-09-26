@@ -8,161 +8,179 @@
     <style>
         @page {
             size: A4;
-            margin: 25mm;
+            margin: 10mm; /* minimal page margin */
         }
         body {
             font-family: 'Roboto', sans-serif;
             margin: 0;
-            color: #333;
+            color: #111;
             display: flex;
             flex-direction: column;
             min-height: 100vh;
+            background-color: #fff; /* full white background */
+        }
+        .invoice-container {
+            width: 95%; /* almost full width */
+            margin: 10px auto;
+            padding: 20px 15px;
         }
         .header {
             display: flex;
             justify-content: space-between;
             align-items: center;
-            border-bottom: 2px solid #555;
+            border-bottom: 1px solid #111;
             padding-bottom: 10px;
+            margin-bottom: 15px;
         }
         h1 {
             margin: 0;
             font-size: 28px;
+            font-weight: 500;
+        }
+        .logo img {
+            max-width: 160px;
+            object-fit: cover;
+            object-position: center -5px; /* crop top slightly */
         }
         .content {
-            flex: 1; /* stretch to fill page */
             display: flex;
             flex-direction: column;
-            justify-content: space-between;
         }
         .customer-details, .invoice-details {
-            margin-top: 20px;
-            font-size: 14px;
-            line-height: 1.5;
+            font-size: 13px;
+            line-height: 1.4;
         }
-        .invoice-details span, .customer-details span {
+        .customer-details span, .invoice-details span {
             display: block;
+            margin-top: 2px;
+        }
+        .customer-details span strong, .invoice-details span strong {
+            font-weight: 500;
         }
         table {
             width: 100%;
             border-collapse: collapse;
-            margin-top: 30px;
-            font-size: 14px;
+            margin-top: 20px;
+            font-size: 13px;
         }
         table thead {
-            background-color: #f5f5f5;
+            background-color: #f2f2f2;
         }
         table th, table td {
             text-align: left;
-            padding: 10px 8px;
-            border-bottom: 1px solid #ddd;
+            padding: 8px 6px;
+            border-bottom: 1px solid #111;
+            font-weight: 400;
         }
         table tbody tr:hover {
             background-color: #f9f9f9;
         }
         .totals {
             width: 100%;
-            margin-top: 20px;
-            font-size: 14px;
+            margin-top: 15px;
+            font-size: 13px;
         }
         .totals td {
-            padding: 10px 8px;
+            padding: 6px 6px;
+            border-bottom: 1px solid #111;
         }
         .totals tr td:first-child {
-            font-weight: bold;
+            font-weight: 500;
+        }
+        .totals tr td:last-child {
+            text-align: right;
         }
         .totals .grand-total td {
-            background-color: #333;
+            background-color: #111;
             color: #fff;
-            font-weight: bold;
+            font-weight: 500;
             text-align: right;
-            padding: 12px 8px;
-            border-top: 2px solid #555;
+            padding: 10px 6px;
+            border-top: 1px solid #111;
         }
         .totals .grand-total td:first-child {
             text-align: left;
         }
-        .totals td:last-child {
-            text-align: right;
-        }
         footer {
             text-align: center;
-            font-size: 12px;
-            margin-top: 30px;
+            font-size: 11px;
+            margin-top: 25px;
             color: #555;
         }
     </style>
 </head>
 <body>
-    <div class="header">
-        <div>
-            <h1>Invoice</h1>
-        </div>
-        <div>
-            <img src="{{ logo_url }}" alt="store Logo" style="max-width: 180px;">
-        </div>
-    </div>
-
-    <div class="content">
-        <!-- Customer + Invoice Details -->
-        <div style="display:flex; justify-content:space-between; margin-top:20px;">
-            <div class="customer-details">
-                <strong>Issued To:</strong>
-                <span>{{ bill.customer_name }}</span>
-                <span>{{ bill.customer_address }}</span>
-                <span><strong>Payment Method:</strong> {{ bill.payment_method }}</span> <!-- Added payment method -->
+    <div class="invoice-container">
+        <div class="header">
+            <div>
+                <h1>Invoice</h1>
             </div>
-            <div class="invoice-details">
-                <span><strong>Invoice No:</strong> {{ bill.bill_number }}</span>
-                <span><strong>Date:</strong> {{ bill.date|date:"d.m.Y" }}</span>
+            <div class="logo">
+                <img src="{{ logo_url }}" alt="Store Logo">
             </div>
         </div>
 
-        <!-- Items Table -->
-        <table>
-            <thead>
-                <tr>
-                    <th>Description</th>
-                    <th>HSN</th>
-                    <th>Rate (₹)</th>
-                    <th>Qty</th>
-                    <th>Tax %</th>
-                    <th>Total (₹)</th>
-                </tr>
-            </thead>
-            <tbody>
-                {% for item in bill.items.all %}
-                <tr>
-                    <td>{{ item.product.name }}</td>
-                    <td>{{ item.product.hsn_code }}</td>
-                    <td>{{ item.price|floatformat:2 }}</td>
-                    <td>{{ item.quantity }}</td>
-                    <td>{{ item.tax_rate|floatformat:2 }}</td>
-                    <td>{{ item.total_amount|floatformat:2 }}</td>
-                </tr>
-                {% endfor %}
-            </tbody>
-        </table>
+        <div class="content">
+            <!-- Customer + Invoice Details -->
+            <div style="display:flex; justify-content:space-between; margin-bottom:15px;">
+                <div class="customer-details">
+                    <strong>Issued To:</strong>
+                    <span>{{ bill.customer_name }}</span>
+                    <span>{{ bill.customer_address }}</span>
+                    <span><strong>Payment Method:</strong> {{ bill.payment_method }}</span>
+                </div>
+                <div class="invoice-details">
+                    <span><strong>Invoice No:</strong> {{ bill.bill_number }}</span>
+                    <span><strong>Date:</strong> {{ bill.date|date:"d.m.Y" }}</span>
+                </div>
+            </div>
 
-        <!-- Totals -->
-        <table class="totals">
-            <tr>
-                <td>Subtotal</td>
-                <td>₹{{ bill.subtotal|floatformat:2 }}</td>
-            </tr>
-            <tr>
-                <td>Tax</td>
-                <td>₹{{ bill.tax_amount|floatformat:2 }}</td>
-            </tr>
-            <tr class="grand-total">
-                <td>Total</td>
-                <td>₹{{ bill.total_amount|floatformat:2 }}</td>
-            </tr>
-        </table>
+            <!-- Items Table -->
+            <table>
+                <thead>
+                    <tr>
+                        <th>Description</th>
+                        <th>HSN</th>
+                        <th>Rate (₹)</th>
+                        <th>Qty</th>
+                        <th>Tax %</th>
+                        <th>Total (₹)</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    {% for item in bill.items.all %}
+                    <tr>
+                        <td>{{ item.product.name }}</td>
+                        <td>{{ item.product.hsn_code }}</td>
+                        <td>{{ item.price|floatformat:2 }}</td>
+                        <td>{{ item.quantity }}</td>
+                        <td>{{ item.tax_rate|floatformat:2 }}</td>
+                        <td>{{ item.total_amount|floatformat:2 }}</td>
+                    </tr>
+                    {% endfor %}
+                </tbody>
+            </table>
+
+            <!-- Totals -->
+            <table class="totals">
+                <tr>
+                    <td>Subtotal</td>
+                    <td>₹{{ bill.subtotal|floatformat:2 }}</td>
+                </tr>
+                <tr>
+                    <td>Tax</td>
+                    <td>₹{{ bill.tax_amount|floatformat:2 }}</td>
+                </tr>
+                <tr class="grand-total">
+                    <td>Total</td>
+                    <td>₹{{ bill.total_amount|floatformat:2 }}</td>
+                </tr>
+            </table>
+        </div>
+
+        <footer>
+            Thank you for your business!
+        </footer>
     </div>
-
-    <footer>
-        Thank you for your business!
-    </footer>
 </body>
 </html>
