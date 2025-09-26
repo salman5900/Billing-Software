@@ -7,8 +7,11 @@ from .models import Bill, BillItem
 class BillForm(forms.ModelForm):
     class Meta:
         model = Bill
-        fields = ['bill_number', 'customer_name']
-        exclude = ['bill_number']  
+        fields = ['bill_number', 'customer_name', 'payment_method']
+        exclude = ['bill_number'] 
+        widgets = {
+            "mode_of_payment": forms.RadioSelect()
+        } 
 
     def __init__(self, *args, **kwargs):
         super().__init__(*args, **kwargs)

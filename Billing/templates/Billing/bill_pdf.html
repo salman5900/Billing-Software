@@ -84,7 +84,7 @@
         }
         .totals td:last-child {
             text-align: right;
-      }
+        }
         footer {
             text-align: center;
             font-size: 12px;
@@ -110,6 +110,7 @@
                 <strong>Issued To:</strong>
                 <span>{{ bill.customer_name }}</span>
                 <span>{{ bill.customer_address }}</span>
+                <span><strong>Payment Method:</strong> {{ bill.payment_method }}</span> <!-- Added payment method -->
             </div>
             <div class="invoice-details">
                 <span><strong>Invoice No:</strong> {{ bill.bill_number }}</span>

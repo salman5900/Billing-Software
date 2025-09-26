@@ -4,9 +4,15 @@ from stockMang.models import Product
 
 
 class Bill(models.Model):
+    PAYMENT_CHOICES = [
+        ('cash', 'Cash'),
+        ('card', 'Card'),
+        ('upi', 'UPI'),
+    ]
     bill_number = models.CharField(max_length=20, unique=True, editable=False, blank=True)
     date = models.DateTimeField(auto_now_add=True)
     customer_name = models.CharField(max_length=100)
+    payment_method = models.CharField(max_length=10, choices=PAYMENT_CHOICES, default='cash')
 
     def save(self, *args, **kwargs):
         if not self.bill_number:  # Only generate when creating
