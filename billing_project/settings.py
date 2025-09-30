@@ -85,6 +85,18 @@ DATABASES = {
 }
 
 
+# DATABASES = {
+#     'default': {
+#         'ENGINE': 'django.db.backends.postgresql',
+#         'NAME': 'postgres',  # your Supabase DB name
+#         'USER': 'postgres',
+#         'PASSWORD': '7u!P_8b87f&T#C8',  # make sure you add this
+#         'HOST': 'db.ivuscdsjhqamxlpoiiku.supabase.co',
+#         'PORT': '5432',
+#     }
+# }
+
+
 # Password validation
 # https://docs.djangoproject.com/en/5.2/ref/settings/#auth-password-validators
 
