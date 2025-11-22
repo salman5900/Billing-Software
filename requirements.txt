@@ -3,6 +3,7 @@ Brotli==1.1.0
 cffi==2.0.0
 charset-normalizer==3.4.3
 cssselect2==0.8.0
+dj-database-url==3.0.1
 Django==5.2.6
 django-widget-tweaks==1.5.0
 fonttools==4.60.0
